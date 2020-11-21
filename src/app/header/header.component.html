@@ -1,18 +1,18 @@
 <mat-toolbar color="primary">
-    <span><a routerLink='/'>LsSocials</a></span>
+    <span><a class="ls" routerLink='/'>LsSocials</a></span>
     <span class='spacer'></span>
     <ul>
         <li *ngIf="userIsAuthenticated">
-            <a mat-button routerLink='/create' routerLinkActive='mat-accent'>New Post</a>
+            <a mat-button class="new-post" routerLink='/create' routerLinkActive='mat-accent'>New Post</a>
         </li>
         <li *ngIf="!userIsAuthenticated">
-            <a mat-button routerLink='/auth/login' routerLinkActive='mat-accent'>Login</a>
+            <a mat-button class="login" routerLink='/auth/login' routerLinkActive='mat-accent'>Login</a>
         </li>
         <li *ngIf="!userIsAuthenticated">
-            <a mat-button routerLink='/auth/signup' routerLinkActive='mat-accent'>Signup</a>
+            <a mat-button class="signup" routerLink='/auth/signup' routerLinkActive='mat-accent'>Signup</a>
         </li>
         <li *ngIf="userIsAuthenticated">
-            <button mat-button (click)="onLogout()">Logout</button>
+            <button mat-button class="logout" (click)="onLogout()">Logout</button>
         </li>
     </ul>
 </mat-toolbar>

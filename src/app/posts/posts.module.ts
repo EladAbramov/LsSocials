@@ -1,14 +1,16 @@
-import { NgModule } from "@angular/core";
+import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { CommonModule } from "@angular/common";
-import { RouterModule } from "@angular/router";
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { PostCreateComponent } from './post-create/post-create.component';
 import { PostListComponent } from './post-list/post-list.component';
-import { AngularMaterialModule } from "../angular-material.module";
+import { AngularMaterialModule } from '../angular-material.module';
+import { ScrollingModule} from '@angular/cdk/scrolling';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
     declarations: [PostCreateComponent, PostListComponent],
-    imports: [CommonModule, ReactiveFormsModule, AngularMaterialModule, RouterModule]
+    imports: [MatIconModule, CommonModule, ReactiveFormsModule, AngularMaterialModule, RouterModule, ScrollingModule]
 })
 
 export class PostsModule {}

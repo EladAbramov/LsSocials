@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Texturina&display=swap');
 :host{
   display: block;
   margin-top: 1rem;
@@ -10,15 +11,44 @@
 mat-spinner {
   margin: auto;
 }
-mat-paginator {
-  margin-top: 1rem;
-}
-
 .post-image{
-  width: 70%;
+  width: 60%;
 }
 
 .post-image img{
-  width: 70%;
+  width: 60%;
+  height: 200px;
+  margin: auto;
+  margin-top: 20px;
   box-shadow: 1px 1px 5px rgba(0,0,0,0,5);
+}
+.example-card {
+  max-width: 100%;
+  margin-top: 50px;
+  height: 380px;
+}
+.content {
+  margin-top: 20px;
+  font-size: 20px;
+  font-family: 'Texturina', serif;
+}
+
+.container {
+  height: 1150px;
+}
+
+.heart {
+  color:rgb(126, 118, 118);
+}
+
+.heart.active{
+  color: red;
+}
+
+.title {
+  font-family: 'Texturina', serif;
+}
+
+.created {
+  font-family: 'Texturina', serif;
 }

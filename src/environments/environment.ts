@@ -4,14 +4,17 @@
 
 export const environment = {
   production: false,
-  apiUrl: "http://localhost:3000/api"
+  apiUrl: 'http://localhost:3000/api',
+
+  firebaseConfig: {
+    apiKey: 'AIzaSyAt9R5Vnnv1AYlg8sXAMPL0zQTAAHLzngs',
+    authDomain: 'lssocials.firebaseapp.com',
+    databaseURL: 'https://lssocials.firebaseio.com',
+    projectId: 'lssocials',
+    storageBucket: 'lssocials.appspot.com',
+    messagingSenderId: '852252633025',
+    appId: '1:852252633025:web:8a1e4adb8868c599bf7140',
+    measurementId: 'G-S60XQ0M98Y'
+  }
 };
 
-/*
- * For easier debugging in development mode, you can import the following file
- * to ignore zone related error stack frames such as `zone.run`, `zoneDelegate.invokeTask`.
- *
- * This import should be commented out in production mode because it will have a negative impact
- * on performance if an error is thrown.
- */
-// import 'zone.js/dist/zone-error';  // Included with Angular CLI.

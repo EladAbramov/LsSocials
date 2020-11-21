@@ -1,11 +1,14 @@
 const Post = require("../models/post");
 
-
+// Create new post
 exports.createPost = (req, res, next) => {
+  const now = new Date();
+
     const url = req.protocol + "://" + req.get("host");
     const post = new Post({
       title: req.body.title,
       content: req.body.content,
+      timeCreated: now.toString(),
       imagePath: url + "/images/" + req.file.filename,
       creator:req.userData.userId
     });
@@ -25,6 +28,7 @@ exports.createPost = (req, res, next) => {
     });
 };
 
+// Update post
 exports.updatePost = (req, res, next) => {
     let imagePath = req.body.imagePath;
     if (req.file) {
@@ -34,6 +38,7 @@ exports.updatePost = (req, res, next) => {
     const post = new Post({
         _id: req.body.id,
         title: req.body.title,
+        timeCreated: req.body.timeCreated,
         content: req.body.content,
         imagePath: imagePath,
         creator: req.userData.userId
@@ -52,6 +57,7 @@ exports.updatePost = (req, res, next) => {
     });
 };
 
+// Get all posts
 exports.getPosts = (req, res, next) => {
     const pageSize = +req.query.pagesize;
     const currentPage = +req.query.page;
@@ -71,7 +77,7 @@ exports.getPosts = (req, res, next) => {
             posts: fetchedPosts,
             maxPosts: count
         });
-    }) 
+    })
     .catch(error => {
         res.status(500).json({
             message: 'Fetching posts failed.'
@@ -79,6 +85,7 @@ exports.getPosts = (req, res, next) => {
     });
 }
 
+// Get single post
 exports.getPost = (req, res, next) => {
     Post.findById(req.params.id).then(post => {
         if (post) {
@@ -94,6 +101,7 @@ exports.getPost = (req, res, next) => {
     });
 };
 
+// Delete post
 exports.deletePost = (req, res, next) => {
     Post.deleteOne({ _id: req.params.id ,creator: req.userData.userId })
     .then(result => {
@@ -110,6 +118,7 @@ exports.deletePost = (req, res, next) => {
         });
     });
 };
+
 
 
 

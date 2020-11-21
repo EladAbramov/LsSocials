@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "lssocials": {
+      "hosting": {
+        "MEAN-projects": [
+          "lssocials"
+        ]
+      }
+    }
+  }
+}

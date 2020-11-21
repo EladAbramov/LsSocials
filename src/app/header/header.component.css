@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Texturina&display=swap');
+
 ul {
     list-style: none;
     margin: 0;
@@ -16,3 +18,52 @@ ul {
 .spacer {
     flex: 1 1 auto;
 }
+
+.new-post:hover {
+  color: rgb(102, 200, 218);
+}
+
+.login:hover {
+  color: rgb(102, 200, 218);
+}
+
+.signup:hover {
+  color: rgb(102, 200, 218);
+}
+
+
+.logout:hover {
+  color: rgb(102, 200, 218);
+}
+
+
+.ls:hover {
+  color: rgb(102, 200, 218);
+}
+
+.new-post {
+  font-family: 'Texturina', serif;
+}
+
+.login {
+  font-family: 'Texturina', serif;
+}
+
+.signup {
+  font-family: 'Texturina', serif;
+}
+
+
+.logout {
+  font-family: 'Texturina', serif;
+}
+
+
+.ls {
+  font-family: 'Texturina', serif;
+}
+
+
+
+
+

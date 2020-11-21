@@ -22,13 +22,14 @@ export class PostsService {
       .pipe(
         map(postData => {
           return {
-            posts: postData.posts.map(post => {
+            posts: postData.posts.map((post: { title: any; content: any; _id: any; imagePath: any; creator: any; timeCreated: any }) => {
               return {
                 title: post.title,
                 content: post.content,
                 id: post._id,
                 imagePath: post.imagePath,
-                creator: post.creator
+                creator: post.creator,
+                timeCreated: post.timeCreated,
               };
             }),
             maxPosts: postData.maxPosts
@@ -49,16 +50,17 @@ export class PostsService {
   }
 
   getPost(id: string) {
-    return this.http.get<{ _id: string, title: string, content: string, imagePath: string, creator: string }>(
+    return this.http.get<{ _id: string, title: string, content: string, imagePath: string, creator: string, timeCreated: any }>(
       BACKEND_URL + id
     );
   }
 
-  addPost(title: string, content: string, image: File) {
+  addPost(title: string, content: string, image: File, timeCreated: string) {
     const postData = new FormData();
     postData.append('title', title);
     postData.append('content', content);
     postData.append('image', image, title);
+    postData.append('timeCreated', timeCreated);
     this.http
       .post<{ message: string; post: Post }>(BACKEND_URL, postData)
       .subscribe(responseData => {
@@ -66,7 +68,7 @@ export class PostsService {
       });
   }
 
-  updatePost(id: string, title: string, content: string, image: File | string) {
+  updatePost(id: string, title: string, content: string, image: File | string, timeCreated: string) {
     let postData: Post | FormData;
     if (typeof image === 'object') {
       postData = new FormData();
@@ -74,13 +76,16 @@ export class PostsService {
       postData.append('title', title);
       postData.append('content', content);
       postData.append('image', image, title);
+      postData.append('timeCreated', timeCreated);
+
     } else {
       postData = {
         id,
         title,
         content,
         imagePath: image,
-        creator: null
+        creator: null,
+        timeCreated,
       };
     }
     this.http
@@ -93,5 +98,7 @@ export class PostsService {
   deletePost(postId: string) {
     return this.http.delete(BACKEND_URL + postId);
   }
+
+
 }
 

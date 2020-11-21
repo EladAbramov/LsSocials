@@ -1,33 +1,37 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
-import { FormGroup, FormControl, Validators } from "@angular/forms";
-import { ActivatedRoute, ParamMap } from "@angular/router";
-import { Subscription } from "rxjs";
-import { PostsService } from "../posts.service";
-import { Post } from "../post.model";
-import { mimeType } from "./mime-type.validator";
-import { AuthService } from "../../auth/auth.service";
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { ActivatedRoute, ParamMap } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { PostsService } from '../posts.service';
+import { Post } from '../post.model';
+import { mimeType } from './mime-type.validator';
+import { AuthService } from '../../auth/auth.service';
+import { AngularFireStorage, AngularFireStorageReference, AngularFireUploadTask } from 'angularfire2/storage';
 
 @Component({
-  selector: "app-post-create",
-  templateUrl: "./post-create.component.html",
-  styleUrls: ["./post-create.component.css"]
+  selector: 'app-post-create',
+  templateUrl: './post-create.component.html',
+  styleUrls: ['./post-create.component.css']
 })
 export class PostCreateComponent implements OnInit, OnDestroy {
-  enteredTitle = "";
-  enteredContent = "";
+  ref: AngularFireStorageReference;
+  task: AngularFireUploadTask;
+  enteredTitle = '';
+  enteredContent = '';
   post: Post;
   isLoading = false;
   form: FormGroup;
   imagePreview: string;
-  private mode = "create";
+  private mode = 'create';
   private postId: string;
   private authStatusSub: Subscription;
 
   constructor(
     public postsService: PostsService,
     public route: ActivatedRoute,
-    private authService: AuthService
-  ){}
+    private authService: AuthService,
+    private afStorage: AngularFireStorage
+  ) {}
 
   ngOnInit() {
     this.authStatusSub = this.authService
@@ -46,9 +50,9 @@ export class PostCreateComponent implements OnInit, OnDestroy {
       })
     });
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
-      if (paramMap.has("postId")) {
-        this.mode = "edit";
-        this.postId = paramMap.get("postId");
+      if (paramMap.has('postId')) {
+        this.mode = 'edit';
+        this.postId = paramMap.get('postId');
         this.isLoading = true;
         this.postsService.getPost(this.postId).subscribe(postData => {
           this.isLoading = false;
@@ -57,30 +61,37 @@ export class PostCreateComponent implements OnInit, OnDestroy {
             title: postData.title,
             content: postData.content,
             imagePath: postData.imagePath,
-            creator: postData.creator
+            creator: postData.creator,
+            timeCreated: postData.timeCreated,
           };
           this.form.setValue({
             title: this.post.title,
             content: this.post.content,
-            image: this.post.imagePath
+            image: this.post.imagePath,
+            timeCreated: this.post.timeCreated,
+
           });
         });
       } else {
-        this.mode = "create";
+        this.mode = 'create';
         this.postId = null;
       }
     });
   }
 
-  onImagePicked(event: Event) {
+  onImagePicked(event) {
     const file = (event.target as HTMLInputElement).files[0];
     this.form.patchValue({ image: file });
-    this.form.get("image").updateValueAndValidity();
+    this.form.get('image').updateValueAndValidity();
     const reader = new FileReader();
     reader.onload = () => {
       this.imagePreview = reader.result as string;
     };
     reader.readAsDataURL(file);
+    // Save images to firebase storage
+    const id = Math.random().toString(36).substring(2);
+    this.ref = this.afStorage.ref(id);
+    this.task = this.ref.put(event.target.files[0]);
   }
 
   onSavePost() {
@@ -88,24 +99,26 @@ export class PostCreateComponent implements OnInit, OnDestroy {
       return;
     }
     this.isLoading = true;
-    if (this.mode === "create") {
+    if (this.mode === 'create') {
       this.postsService.addPost(
         this.form.value.title,
         this.form.value.content,
-        this.form.value.image
+        this.form.value.image,
+        this.form.value.timeCreated,
       );
     } else {
       this.postsService.updatePost(
         this.postId,
         this.form.value.title,
         this.form.value.content,
-        this.form.value.image
+        this.form.value.image,
+        this.form.value.timeCreated,
       );
     }
     this.form.reset();
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.authStatusSub.unsubscribe();
   }
 }
